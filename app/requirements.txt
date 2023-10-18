@@ -1,0 +1,14 @@
+pytest
+coverage
+distlib
+filelock
+packaging
+platformdirs
+pluggy
+py
+py4j
+pyparsing
+six
+toml
+tox
+virtualenv
