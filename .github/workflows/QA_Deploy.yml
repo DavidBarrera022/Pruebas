@@ -61,4 +61,4 @@ jobs:
         uses: 'google-github-actions/upload-cloud-storage@v1'
         with:
           path: "python/"
-          destination: "bdb-gcp-qa-cds-idt-mlops/model/propensity-model-598/input/feature-storage-functions" #"${{ secrets.BUCKET_DESTINATION }}"
+          destination: "bdb-gcp-qa-cds-idt-mlops" #"${{ secrets.BUCKET_DESTINATION }}"
