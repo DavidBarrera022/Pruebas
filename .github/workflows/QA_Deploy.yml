@@ -6,11 +6,6 @@ on:
       - qa
     paths:
       - .github/workflows/QA_Deploy.yml
-  push:
-    branches:
-      - qa
-    paths:
-      - .github/workflows/QA_Deploy.yml
 
 jobs:
   call:
@@ -67,3 +62,4 @@ jobs:
         with:
           path: "feature-storage-functions/"
           destination: "bdb-gcp-qa-cds-idt-mlops/model/propensity-model-598/input" #"${{ secrets.BUCKET_DESTINATION }}"
+          gzip: false
