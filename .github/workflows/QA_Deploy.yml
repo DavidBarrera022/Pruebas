@@ -34,7 +34,7 @@ jobs:
         run: |
           zip -r feature_storage.zip app/*
       - name: "Move file zip to folder python"
-        run: mv app.zip python
+        run: mv app..zip python
       - name: "Copy main_feature_storage.py.py"
         run: cp ./app/main_feature_storage.py ./python/main_feature_storage.py
       # Instalar Credenciales CLI de Google Cloud Platform

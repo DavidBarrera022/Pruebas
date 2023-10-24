@@ -4,6 +4,7 @@ import argparse
 
 #============ intermediate process =========================
 #===========================================================
+
 def intermediate_function(df,params):
     try:
         df2 = filtrar_prods(df , params)
