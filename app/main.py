@@ -94,6 +94,9 @@ def main(blob_path, blob_path_inter, output_path_intermediate, output_path):
     except Exception as e:
         print(f"Unexpected error in the main process: {e}")
 
+def app_test(var):
+    return var
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('--blob_path', type=str, help='Path to the catalog.yml file')

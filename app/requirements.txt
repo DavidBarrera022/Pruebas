@@ -12,3 +12,9 @@ six
 toml
 tox
 virtualenv
+gcsfs
+numpy
+pandas
+pyarrow
+google-cloud-bigquery
+pyyaml
