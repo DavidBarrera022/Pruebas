@@ -28,7 +28,7 @@ jobs:
 
   deploy_qa:
     name: Upload file to bucket in qa
-    ##needs: [call]
+    needs: [call]
     runs-on: ubuntu-latest
     environment: qa
     permissions:
