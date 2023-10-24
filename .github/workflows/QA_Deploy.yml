@@ -36,6 +36,13 @@ jobs:
         with:
           token: ${{secrets.DIG_READER_GITHUB_ACCESS_TOKEN}}
 
+      - name: Set up Cloud SDK
+        uses: google-github-actions/auth@v0
+        with:
+            project_id: 'bdb-gcp-qa-cds-idt'
+            workload_identity_provider: ${{ secrets.GCP_IDENTITY_PROVIDER }}
+            service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
+
       - name: "Temorary Folder"
         run: mkdir feature-storage-functions
 
@@ -48,13 +55,6 @@ jobs:
 
       - name: "Copy main_feature_storage.py"
         run: cp ./app/main_feature_storage.py ./feature-storage-functions/main_feature_storage.py
-
-      - name: Set up Cloud SDK
-        uses: google-github-actions/auth@v0
-        with:
-            project_id: 'bdb-gcp-qa-cds-idt'
-            workload_identity_provider: ${{ secrets.GCP_IDENTITY_PROVIDER }}
-            service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
 
       - name: Load File
         id: 'upload-files'
