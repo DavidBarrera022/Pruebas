@@ -1,9 +1,10 @@
-from intermediate_functions import *
-from feature_functions import *
+from app.net.bancodebogota.intermediate_functions import *
+from app.net.bancodebogota.feature_functions import *
 import argparse
 
 #============ intermediate process =========================
 #===========================================================
+
 def intermediate_function(df,params):
     try:
         df2 = filtrar_prods(df , params)
@@ -92,6 +93,9 @@ def main(blob_path, blob_path_inter, output_path_intermediate, output_path):
         print("Feature extraction process successful")
     except Exception as e:
         print(f"Unexpected error in the main process: {e}")
+
+def app_test(var):
+    return var
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
