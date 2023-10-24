@@ -6,6 +6,11 @@ on:
       - qa
     paths:
       - .github/workflows/QA_Deploy.yml
+  push:
+    branches:
+      - qa
+    paths:
+      - .github/workflows/QA_Deploy.yml
 
 jobs:
   call:
