@@ -1,5 +1,5 @@
-from intermediate_functions import *
-from feature_functions import *
+from app.net.bancodebogota.intermediate_functions import *
+from app.net.bancodebogota.feature_functions import *
 import argparse
 
 #============ intermediate process =========================
