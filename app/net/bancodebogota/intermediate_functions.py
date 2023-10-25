@@ -1,5 +1,5 @@
 """
-Nodos y funciones para el pipeline 'intermediate'
+Funciones etapa intermedia construccion feature store 598
 """
 import numpy as np
 import pandas as pd
@@ -8,13 +8,15 @@ from google.cloud import storage
 from typing import Dict, List, Any
 import yaml
 from io import BytesIO
-def read_bq(query):
+from globals import fc
 
+
+def read_bq(query):
     """
     lectura tabla from BQ.
     Se hace laconsulta mediante un query y se almacena la data en un pd.DataFrame
     """
-        
+
     client = bigquery.Client()
     df = client.query(query).to_dataframe()
 
@@ -39,7 +41,7 @@ def filtrar_prods(df: pd.DataFrame, params: Dict[Any, Any]) -> pd.DataFrame:
     """
     df = df.loc[df[params['producto_agrupado_col']].isin(params['products'])]
 
-    print(f"INFO: Shape Dataframe after filter by products: {df.shape}")
+    fc.append_df("INFO", f"Shape Dataframe after filter by products: {df.shape}")
 
     return df
 
@@ -64,7 +66,7 @@ def fill_na(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def definir_cols_types(
-    df: pd.DataFrame, params: Dict[Any, Any]
+        df: pd.DataFrame, params: Dict[Any, Any]
 ) -> pd.DataFrame:
     """
     Cambiar los tipos de columna de acuerdo al diccionario (Dict[col, type]).
@@ -76,7 +78,7 @@ def definir_cols_types(
         DataFrame al que se le desea ajustar los tipos de columna.
     params : Dict[Any, Any]
         Diccionario de parÃ¡metros.
-        
+
     Returns
     -------
     pd.DataFrame
@@ -103,23 +105,23 @@ def agrupacion_target(df: pd.DataFrame, params: Dict[Any, Any]) -> pd.DataFrame:
         DataFrame al que se le desea ajustar los tipos de columna.
     params : Dict[Any, Any]
         Diccionario de parÃ¡metros.
-        
+
     Returns
     -------
     pd.DataFrame
         DataFrame agrupacion de productos ajustada.
     """
-    
+
     df[params['producto_agrupado_col']] = np.where(df[params['codigo_linea_col']] == "110",
-                                         "ADN",
-                                         df[params['producto_agrupado_col']])
+                                                   "ADN",
+                                                   df[params['producto_agrupado_col']])
 
     df[params['producto_agrupado_col']] = np.where(df[params['producto_agrupado_col']] == "Rotativos",
-                                             "Crediservice",
-                                             df[params['producto_agrupado_col']])
+                                                   "Crediservice",
+                                                   df[params['producto_agrupado_col']])
 
     df = df.drop(columns=[params['codigo_linea_col']])
-    
+
     return df
 
 
@@ -162,9 +164,9 @@ def cols_minuscula(df: pd.DataFrame) -> pd.DataFrame:
 
     return df
 
-#read a yaml file from gogole storage
-def read_yaml_storage(blob_path):
 
+# read a yaml file from gogole storage
+def read_yaml_storage(blob_path):
     # Create a client to interact with GCS
     client = storage.Client()
     # Split the blob path to get the bucket and blob names
@@ -179,6 +181,7 @@ def read_yaml_storage(blob_path):
     query_params = yaml.safe_load(yaml_data)
 
     return query_params
+
 
 def df_to_storage_parquet(df, ruta_gcs):
     # Parse GCS path
@@ -196,3 +199,4 @@ def df_to_storage_parquet(df, ruta_gcs):
     # Upload BytesIO object to GCS
     buffer.seek(0)
     blob.upload_from_file(buffer, content_type='application/octet-stream')
+    fc.append_df("INFO", f"DataFrame saved to storage as parquet: {ruta_gcs}")

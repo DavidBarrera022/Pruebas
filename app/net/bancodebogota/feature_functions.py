@@ -1,5 +1,5 @@
 """
-Nodos y funciones para el pipeline 'feature'
+funciones para el pipeline 'feature'
 """
 import numpy as np
 import pandas as pd
@@ -9,58 +9,33 @@ import pyarrow.parquet as pq
 from google.cloud import storage
 import datetime
 import os
+from globals import fc
+
 
 def feature_to_storage_parquet(df, ruta_gcs, nombre_archivo_parquet):
-    # Importar gcsfs
-    import gcsfs
-    
     # Crear la fecha y hora actual en el formato deseado
     date_path = datetime.datetime.now().strftime("%d%m%Y%H:%M")
-    
+
     # Construir la ruta completa del archivo
     full_path = f"{ruta_gcs.rstrip('/')}/{date_path}/{nombre_archivo_parquet}"
 
     # Escribir el DataFrame en la ruta utilizando el sistema de archivos de GCS
     df.to_parquet(full_path, index=False, storage_options={"token": "cloud"})
+    fc.append_df("INFO", f"Feature DataFrame saved to storage as parquet: {full_path}")
 
-    print(f"Archivo guardado en {full_path}")
-
-
-"""
-def feature_to_storage_parquet(df, ruta_gcs, nombre_archivo_parquet):
-    # Crear un cliente de GCS
-    storage_client = storage.Client()
-
-    # Extraer el nombre del bucket y el resto de la ruta desde la URL de GCS
-    bucket_name, blob_path = ruta_gcs.replace("gs://", "").split("/", 1)
-    bucket = storage_client.get_bucket(bucket_name)
-
-    # Crear la ruta de salida con la fecha y hora actual
-    date_path = datetime.datetime.now().strftime("%d%m%Y%H:%M")
-    blob_name = f"{blob_path}/{date_path}/{nombre_archivo_parquet}"
-
-    # Obtener el blob y abrirlo en modo escritura binaria
-    blob = bucket.blob(blob_name)
-
-    with blob.open("wb") as f:
-        df.to_parquet(f, index=False)
-
-    print(f"Archivo guardado en gs://{bucket_name}/{blob_name}")
-
-"""
 
 def read_parquet(gs_path):
     """
     Reads a Parquet file from a GCS path and returns a Pandas DataFrame
     """
     fs = gcsfs.GCSFileSystem()
-    
+
     # Open Parquet file using GCSFileSystem and ParquetFile
     with fs.open(gs_path, 'rb') as f:
         parquet_file = pq.ParquetFile(f)
         arrow_table = parquet_file.read()
         df = arrow_table.to_pandas()
-    
+
     return df
 
 
@@ -80,7 +55,7 @@ def calcular_edad(df: pd.DataFrame, fecha_nacimiento: str) -> pd.DataFrame:
     pd.DataFrame
         DataFrame con la nueva columna de edad del cliente.
     """
-    #df["edad"] = (pd.Timestamp("now") - df[fecha_nacimiento]).dt.days // 365
+    # df["edad"] = (pd.Timestamp("now") - df[fecha_nacimiento]).dt.days // 365
     df["edad"] = (pd.Timestamp("now") - df[fecha_nacimiento]).astype("timedelta64[Y]")
     return df
 
@@ -98,7 +73,7 @@ def calcular_generacion(df: pd.DataFrame, fecha_nacimiento: str) -> pd.DataFrame
       Millenial.
     - Si el cliente naciÃ³ despuÃ©s del aÃ±o 2000, entonces pertenece a la generaciÃ³n
       Centennial.
-        
+
 
     Parameters
     ----------
@@ -130,7 +105,6 @@ def calcular_generacion(df: pd.DataFrame, fecha_nacimiento: str) -> pd.DataFrame
     ]
 
     df["generacion"] = np.select(conds_gen, generacion)
-    
 
     return df
 
@@ -176,6 +150,3 @@ def calcular_grupo_etario(df: pd.DataFrame) -> pd.DataFrame:
 
     return df
 
-#df = read_parquet('gs://bdb-gcp-qa-cds-idt-analytics-zone/mlops-pipelines/598-data-output/intermediate.parquet')
-
-#print(df.head())
