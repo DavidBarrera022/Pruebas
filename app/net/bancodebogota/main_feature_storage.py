@@ -1,7 +1,7 @@
-from intermediate_functions import *
-from feature_functions import *
+from .intermediate_functions import *
+from .feature_functions import *
 import argparse
-from app.net.bancodebogota.globals import fc
+from .globals import fc
 
 def handle_error_and_create_bucket(error_msg, e=None):
     fc.append_df("ERROR", f"{error_msg}: {e}" if e else error_msg)

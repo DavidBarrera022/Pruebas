@@ -4,6 +4,10 @@ import argparse
 
 from app.net.bancodebogota.globals import fc
 
+
+def app_test(a):
+    return a
+
 def handle_error_and_create_bucket(error_msg, e=None):
     fc.append_df("ERROR", f"{error_msg}: {e}" if e else error_msg)
     fc.create_file_bucket()
