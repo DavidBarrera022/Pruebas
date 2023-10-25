@@ -4,6 +4,7 @@ on:
     types: [opened, reopened, edited]
     branches:
       - qa
+      - feature/QA_*
     paths:
       - .github/workflows/QA_Deploy.yml
 
