@@ -9,7 +9,7 @@ import pyarrow.parquet as pq
 from google.cloud import storage
 import datetime
 import os
-from globals import fc
+from .globals import fc
 
 
 def feature_to_storage_parquet(df, ruta_gcs, nombre_archivo_parquet):

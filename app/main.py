@@ -4,13 +4,16 @@ import argparse
 
 from app.net.bancodebogota.globals import fc
 
+
+def app_test(a):
+    return a
+
 def handle_error_and_create_bucket(error_msg, e=None):
     fc.append_df("ERROR", f"{error_msg}: {e}" if e else error_msg)
     fc.create_file_bucket()
 
 def intermediate_function(df, params):
     try:
-        #df2 = filtrar_prods(df , params)
         df2 = fill_na(df)
         df_types = definir_cols_types(df2, params)
         df_group = agrupacion_target(df_types, params)

@@ -1,7 +1,7 @@
-from intermediate_functions import *
-from feature_functions import *
+from .intermediate_functions import *
+from .feature_functions import *
 import argparse
-from globals import fc
+from .globals import fc
 
 def handle_error_and_create_bucket(error_msg, e=None):
     fc.append_df("ERROR", f"{error_msg}: {e}" if e else error_msg)
@@ -9,7 +9,6 @@ def handle_error_and_create_bucket(error_msg, e=None):
 
 def intermediate_function(df, params):
     try:
-        #df2 = filtrar_prods(df , params)
         df2 = fill_na(df)
         df_types = definir_cols_types(df2, params)
         df_group = agrupacion_target(df_types, params)
