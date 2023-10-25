@@ -1,5 +1,5 @@
 # globals.py
-from clLibFrameworkControl import ClLibFrameworkControl as Fc
+from app.net.bancodebogota.clLibFrameworkControl import ClLibFrameworkControl as Fc
 
 fc = Fc()
 app_name = "mlops598"
