@@ -8,7 +8,7 @@ from google.cloud import storage
 from typing import Dict, List, Any
 import yaml
 from io import BytesIO
-from globals import fc
+from app.net.bancodebogota.globals import fc
 
 
 def read_bq(query):
