@@ -38,11 +38,10 @@ class ClLibFrameworkControl:
     def create_file_bucket(self):
         try:
             hora_colombia = datetime.now(pytz.timezone('America/Bogota'))
-            hora_colombiana_hora_atras = pd.to_datetime(hora_colombia) - pd.DateOffset(days=1)
+            hora_colombiana_hora_atras = pd.to_datetime(hora_colombia)
             fecha_convert_colombiana = hora_colombiana_hora_atras.strftime('%Y%m%d_%H%M%S')
 
-            bucket = 'bdb-gcp-qa-cds-idt-framework-control'
-            
+            bucket = 'bdb-gcp-st-cds-idt-frm-control-zone'
             file = self.name_app + '_' + fecha_convert_colombiana + '.log'
             path_file = 'logs/' + file
             path_local = "/tmp/" + file
