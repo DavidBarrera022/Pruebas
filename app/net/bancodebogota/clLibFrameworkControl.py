@@ -54,7 +54,7 @@ class ClLibFrameworkControl:
             bucket = client.bucket(bucket)
             data_blob = bucket.blob(path_file)
 
-            # Create file & Write file in Bucket
+            # Create file & Write file in Buckets
             data_blob.upload_from_filename(path_local)
 
         except Exception as e:
