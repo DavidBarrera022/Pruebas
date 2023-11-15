@@ -7,6 +7,12 @@ on:
     paths:
       - .github/workflows/ST_Deploy.yml
 
+  push:
+    branches:
+      - staging
+    paths:
+      - .github/workflows/ST_Deploy.yml
+
 jobs:
   call:
     uses: bancodebogota/bbog-dr-pipeline/.github/workflows/requirements_services_python.yml@master
