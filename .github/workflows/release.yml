@@ -1,0 +1,51 @@
+name: Release
+
+on:
+  pull_request:
+    types:
+      - closed
+    branches:
+      - master
+
+jobs:
+  tag:
+    if: github.event.action == 'closed' && github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.TOKEN_SEMANTIC_REUSABLE_PIPELINE_GITHUB }}
+      - name: Checkout Action Semantic Version
+        uses: actions/checkout@v3
+        with:
+          repository: bancodebogota/bbog-dig-do-action-semantic-version-pipeline
+          ref: 'v2'
+          token: ${{ secrets.DIG_READER_GITHUB_ACCESS_TOKEN }}
+          persist-credentials: false
+          path: ./.github/actions/bbog-dig-do-action-semantic-version-pipeline
+      - name: Get Semantic Version
+        id: get-tag
+        uses: ./.github/actions/bbog-dig-do-action-semantic-version-pipeline
+        with:
+          type-function: "get-version"
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.TOKEN_SEMANTIC_REUSABLE_PIPELINE_GITHUB }}
+      - name: Tag new target
+        run: |
+          git tag ${{ steps.get-tag.outputs.tag_major }} || git tag -f ${{ steps.get-tag.outputs.tag_major }} ${{ steps.get-tag.outputs.tag }}
+      - name: Push new tag
+        run: git push origin '${{ steps.get-tag.outputs.tag_major }}' --force
+      - name: Create Or Update Release
+        uses: joutvhu/create-release@v1
+        with:
+          tag_name: ${{ steps.get-tag.outputs.tag_major }}
+          name: ${{ steps.get-tag.outputs.tag_major }}
+          draft: false
+          prerelease: false
+          on_release_exists: update
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

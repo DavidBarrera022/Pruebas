@@ -3,7 +3,7 @@ on:
   pull_request:
     types: [opened, reopened, edited]
     branches:
-      - qa
+      - qa_test
       - feature/QA_*
     paths:
       - .github/workflows/QA_Deploy.yml

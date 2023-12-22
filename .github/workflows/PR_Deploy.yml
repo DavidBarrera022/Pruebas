@@ -3,7 +3,7 @@ on:
   pull_request:
     types: [opened, reopened, edited]
     branches:
-      - master
+      - pr
     paths:
       - .github/workflows/PR_Deploy.yml
 
