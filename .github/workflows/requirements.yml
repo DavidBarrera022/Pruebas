@@ -1,20 +1,18 @@
-name: Report to Sonar
+name: Requirements
+
 on:
   pull_request:
-    types: [opened, reopened, edited]
-    branches:
-      - master
-    paths:
-      - .github/workflows/PR_Deploy.yml
+    branches: [qa, staging, master]
 
 jobs:
-  call:
-    uses: bancodebogota/bbog-dr-pipeline/.github/workflows/requirements_services_python.yml@master
+  requirements-backend:
+    uses: bancodebogota/bbog-dr-pipeline/.github/workflows/requirements_python_backend.yml@releasev1
     with:
       work-dir: "./app"
       language: "python"
       project-name: ""
       path-name: "app"
+      path-environments-variables: ""
     secrets:
       DIG_READER_GITHUB_USER: ${{ secrets.DIG_READER_GITHUB_USER }}
       DIG_READER_GITHUB_ACCESS_TOKEN: ${{ secrets.DIG_READER_GITHUB_ACCESS_TOKEN }}
