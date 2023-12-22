@@ -1,0 +1,12 @@
+name: Deploy PR
+
+on:
+  push:
+    branches: pr
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Alistamiento
+        run: ls
