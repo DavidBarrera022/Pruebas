@@ -1,0 +1,18 @@
+name: Deploy Rollback
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: "Please, enter the environment"
+        required: true
+        type: choice
+        options:
+        - pr
+        - st
+        - qa
+jobs:
+  rollback:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Alistamiento
+        run: ls
